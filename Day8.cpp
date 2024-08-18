@@ -1,178 +1,86 @@
-/*#include<iostream>
-using namespace std;
-int main()
-{
-    int arr[3][4];
-    //int arr[3][4] = {{1,2,3,4},{5,6,7,8},{9,10,11,12}};
-
-    //take input row wise
-    // for(int row = 0; row < 3; row++)
-    // {
-    //     for(int col = 0; col < 4; col++)
-    //     {
-    //         cin>>arr[row][col];
-    //     }
-    // }
-
-    //take input col wise
-    for(int col=0; col<4; col++)
-    {
-        for(int row =0 ; row<3; row++)
-        {
-            cin>>arr[col][row];
-        }
-    }
-    
-    //print
-    for(int i = 0; i < 3; i++)
-    {
-        for(int j = 0; j < 4; j++)
-        {
-            cout<<arr[i][j]<<" ";
-        }
-        cout<<endl;
-    }
-}*/
-
-/*#include<iostream>
-using namespace std;
-bool isPresent(int arr[][4], int target, int row, int col)
-{
-    for(int row = 0; row < 3; row++)
-    {
-        for(int col=0;col<4;col++)
-        {
-            if(arr[row][col] == target)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-}
-//calculation sum of entire array
-int printSum(int arr[][4], int row, int col)
-{
-    int sum = 0;
-    for(int row = 0; row < 3; row++)
-    {
-        for(int col=0;col<4;col++)
-        {
-            sum += arr[row][col];
-        }
-    }
-    cout<<sum<<endl;
-}
-//calculate sum of each row
-void printRowSum(int arr[][4], int row, int col)
-{
-    for(int row=0;row<3;row++)
-    {
-        int sum = 0;
-        for(int col=0;col<4;col++)
-        {
-            sum += arr[row][col];
-        }
-        cout<<sum<<" ";
-    }
-    cout<<endl;
-}
-//Largest sum is present in which row
-void largestSum(int arr[][4], int row, int col)
-{
-    int maximum = 0;
-    int rowIndex = -1;
-    for(int row=0;row<3;row++)
-    {
-        int sum = 0;
-        for(int col=0;col<4;col++)
-        {
-            sum += arr[row][col];
-        }
-        if(sum > maximum)
-        {
-            maximum = sum;
-            rowIndex = row;
-        }
-    }
-    cout<<"Maximum sum is: "<<maximum<<endl;
-    cout<<"Row index is: "<<row;
-}
-int main()
-{
-    int arr[3][4] = {1,2,3,4,5,6,7,8,9,10,11,12};
-    printSum(arr,3,4);
-    printRowSum(arr,3,4);
-    largestSum(arr,3,4);
-    // if(isPresent(arr, 17, 3, 4))
-    // {
-    //     cout<<"Element is present"<<endl;
-    // }
-    // else
-    // {
-    //     cout<<"Element is not present"<<endl;
-    // }
-}*/
-
 #include<iostream>
 using namespace std;
-void wavePrint(int arr[][4], int r, int c)
-{
-    for(int col=0;col<4;col++)
+class Node{
+    public:
+    int data;
+    Node* next;
+    Node(int val)
     {
-        if(col%2 == 0)
-        {
-            for(int row=0;row<3;row++)
-            {
-                cout<<arr[row][col]<<" ";
-            }
-        }
-        else
-        {
-            for(int row=r-1;row>=0;row--)
-            {
-                cout<<arr[row][col]<<" ";
-            }
-        }
+        data=val;
+        next=NULL;
     }
+};
+void insertAtTail(Node* &head,int val){
+    Node* n=new Node(val);
+    if(head==NULL){
+        head=n;
+        return;
+    }
+    Node* temp=head;
+    while(temp->next!=NULL){
+        temp=temp->next;
+    }
+    temp->next=n;
 }
-void spiralPrint(int arr[][4], int row, int col)
+void insertAtHead(Node* &head,int val)
 {
-    int topRow = 0;
-    int bottomRow = row - 1;
-    int leftCol = 0;
-    int rightCol = col - 1;
-    while(topRow <= bottomRow && leftCol <= rightCol)
+    Node* n=new Node(val);
+    n->next=head;
+    head=n;
+}
+void deletion(Node* &head,int val)
+{
+    Node* temp=head;
+    if(head==NULL)
+    return;
+    while(temp->next->data!=val)
     {
-        //print top row
-        for(int i = leftCol;i<= rightCol;i++)
-        {
-            cout<<arr[topRow][i]<<" ";
-        }
-        topRow++;
-        //print right col
-        for(int i = topRow; i <= bottomRow;i++)
-        {
-            cout<<arr[i][rightCol]<<" ";
-        }
-        rightCol--;
-        //print bottom row
-        for(int i = rightCol;i<= leftCol;i++)
-        {
-            cout<<arr[bottomRow][i]<<" ";
-        }
-        bottomRow--;
-        //print left col
-        for(int i = bottomRow;i<= topRow;i++)
-        {
-            cout<<arr[leftCol][i]<<" ";
-        }
-        leftCol++;
+        temp=temp->next;
     }
+    Node* toDel=temp->next;
+    temp->next=temp->next->next;
+    delete toDel;
+}
+void deletionAtHead(Node* &head)
+{
+    Node* toDelete=head;
+    head=head->next;
+    delete toDelete;
+}
+void display(Node* head)
+{
+    Node* temp=head;
+    while(temp!=NULL)
+    {
+        cout<<temp->data<<"->";
+        temp=temp->next;
+    }
+    cout<<"NULL"<<endl;
+}
+Node* reverse(Node* &head)
+{
+    Node* prev=NULL;
+    Node* curr=head;
+    Node* next;
+    while(curr!=NULL){
+        next=curr->next;
+        curr->next=prev;
+        prev=curr;
+        curr=next;
+    }
+    return prev;
 }
 int main()
 {
-    int arr[3][4] = {1,2,3,4,5,6,7,8,9,10,11,12};
-    // wavePrint(arr,3,4);
-    spiralPrint(arr,3,4);
+    Node* head=NULL;
+    insertAtTail(head,1);
+    insertAtTail(head,2);
+    insertAtTail(head,3);
+    display(head);
+    // display(head);
+    // deletion(head,1);
+    // display(head);
+    Node* newHead=reverse(head);
+    display(newHead);
+
 }
